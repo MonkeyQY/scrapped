@@ -22,7 +22,7 @@ def imtid_sku(SKU):
     return imt_id
 
 
-def text_comment(rezult, SKU):
+def text_comment(rezult, SKU, message):
     info_comments = []
     for item in range(len(rezult)):
         date = rezult[item]['createdDate']
@@ -40,13 +40,13 @@ def text_comment(rezult, SKU):
                 info_comments.append(f'Номер карточки {SKU}')
                 stars = rezult[item]['productValuation']
                 info_comments.append(f'Оценка пользователя {stars}')
-                text_comment = rezult[item]['text']
-                info_comments.append(f"\n{text_comment}")
+                text_comments = rezult[item]['text']
+                info_comments.append(f"\n{text_comments}")
                 date = rezult[item]['createdDate']
                 date_time_obj = datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
                 info_comments.append(f'\n{date_time_obj}')
                 comments = '|'.join(str(x) for x in info_comments)
-                bot.send_message(chat_id=chat_id, text=comments)
+                bot.send_message(chat_id=message.chat.id, text=comments)
                 info_comments.clear()
         else:
             break
@@ -71,7 +71,6 @@ def post_data(imt_id, i):
 
 token = '5564290720:AAGQ-dOlQR4VhhoO5Srcg3IVFupmMRLGlK4'
 bot = telebot.TeleBot(token)
-chat_id = '1188662112'
 
 
 @bot.message_handler(commands=["start"])
@@ -84,7 +83,7 @@ def handler(message):
             src = post_data(imt_id, i)
             i += 20
             rezult = src['feedbacks']
-            text_comment(rezult, SKU)
+            text_comment(rezult, SKU, message)
             if i == 300:
                 break
 

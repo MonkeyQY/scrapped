@@ -69,8 +69,7 @@ def post_data(imt_id, i):
     return src
 
 
-token = '5564290720:AAGQ-dOlQR4VhhoO5Srcg3IVFupmMRLGlK4'
-bot = telebot.TeleBot(token)
+
 
 
 @bot.message_handler(commands=["start"])
